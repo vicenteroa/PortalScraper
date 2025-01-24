@@ -28,7 +28,7 @@ PortalScraper es un scraper escrito en Go que extrae información de propiedades
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tuusuario/PortalScraper.git
+   git clone https://github.com/vicenteroa/PortalScraper.git
    cd PortalScraper
    ```
 
