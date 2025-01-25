@@ -1,8 +1,7 @@
 # PortalScraper 🏠
 ![System Architecture](https://github.com/user-attachments/assets/f85b6729-4e4d-4ea2-abcc-0abeb61b7cf3)
 
-Sistema de análisis inteligente para el mercado inmobiliario Plataforma integral para extracción, procesamiento y análisis predictivo de datos de propiedades.
-
+Sistema de análisis inteligente para el mercado inmobiliario Plataforma integral para extracción, procesamiento y análisis predictivo de datos de propiedades. Su propósito es optimizar el tiempo de búsqueda en portale inmobiliarios y detectar oportunidades en el sector
 ---
 
 ## Diseño del Sistema 🧠
@@ -76,14 +75,14 @@ graph TD
 
 | **Criterio**             | **Requerimiento del Sistema** | **Capacidad del Modelo**                                                                 | **Fuente Directa (Documentación DeepSeek)**                                                                                     |
 |--------------------------|-------------------------------|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| **Razonamiento Estructurado** | Análisis jerárquico UF/m²      | Arquitectura de pensamiento en dos fases: `<think>` (análisis interno) y `<answer>` (respuesta estructurada)           | *Sección 2.3.3*: "Generación de hipótesis con validación iterativa mediante etiquetas XML para claridad en el proceso de razonamiento". |
+| **Razonamiento Estructurado** | Análisis jerárquico UF/m²      | Arquitectura de pensamiento en dos fases: `<think>` (análisis interno) y `<answer>` (respuesta estructurada).           | *Sección 2.3.3*: "Generación de hipótesis con validación iterativa mediante etiquetas XML para claridad en el proceso de razonamiento". |
 | **Eficiencia en CPU**       | Latencia <4s por solicitud    | Modelo de 1.5B parámetros con optimización para inferencia en CPU mediante técnicas de cuantización.                   | *Sección 2.3.2*: "Entrenamiento con recompensa de consistencia de lenguaje para reducir carga computacional en inferencia".            |
 | **Consistencia Lógica**     | Auditoría trazable            | Mecanismo GRPO (Group Relative Policy Optimization) para evaluación comparativa de respuestas.                        | *Ecuación 1*: Definición formal de GRPO como método de optimización basado en ventajas relativas dentro de grupos de respuestas.       |
 
 ---
 
 **Selección del Modelo DeepSeek-R1 para Análisis Inmobiliario**  
-La elección de DeepSeek-R1 se fundamenta en su capacidad única para combinar **razonamiento estructurado** y **optimización eficiente**, respaldada por un rendimiento excepcional en tareas que demandan precisión. Con un **96.3% de éxito en resolución de problemas complejos (Codeforces)** y un **79.2% de precisión en análisis jerárquicos**, supera a modelos como GPT-3 (75.7%) en escenarios que requieren validación rigurosa de datos, como el cálculo de ratios UF/m² o la detección de anomalías estadísticas.  
+La elección de DeepSeek-R1 se fundamenta en su capacidad única para combinar **razonamiento estructurado** y **optimización eficiente**, respaldada por un rendimiento excepcional en tareas que demandan precisión. Con un **96.3% de éxito en resolución de problemas complejos (Codeforces)** y un **79.8% en AIME 2024**, supera a modelos como OpenAI-o1-1217 y otros en escenarios que requieren validación rigurosa de datos, como el cálculo de ratios UF/m² o la detección de anomalías estadísticas.  
 
 Su arquitectura `<think>` garantiza transparencia al desglosar cada análisis en pasos lógicos:  
 ```xml
@@ -95,9 +94,15 @@ Su arquitectura `<think>` garantiza transparencia al desglosar cada análisis en
 <answer>OPORTUNIDAD: 14.8% bajo valor de mercado</answer>
 ```  
 
-El modelo emplea **GRPO (Group Relative Policy Optimization)** para generar hasta 4 respuestas por consulta y seleccionar la más robusta mediante comparación grupal, asegurando decisiones estadísticamente sólidas. Complementado con su entrenamiento mediante **"Reinforcement Learning with Cold Start"** —una fase inicial con datos especializados—, el sistema se adapta incluso en mercados con información limitada, identificando patrones como variaciones estacionales en arriendos o oportunidades de valorización geográfica.  
+El modelo emplea **GRPO (Group Relative Policy Optimization)** para generar hasta 4 respuestas por consulta y seleccionar la más robusta mediante comparación grupal, asegurando decisiones estadísticamente sólidas. Complementado con su entrenamiento mediante **"Reinforcement Learning with Cold Start"** —una fase inicial con datos especializados—, el sistema se adapta , identificando patrones como variaciones estacionales en arriendos o oportunidades de valorización geográfica.  
 
-Su eficiencia operativa, con solo **1.9 GB de consumo de memoria en CPU**, permite procesar cientos de propiedades en minutos, integrando variables económicas, geográficas y temporales con transparencia auditada. Esta sinergia entre precisión numérica, adaptabilidad y claridad analítica posiciona a DeepSeek-R1 como una herramienta indispensable para inversiones inmobiliarias seguras, donde cada recomendación se sustenta en datos verificables, no en especulaciones.
+**Evaluación Comparativa del Modelo DeepSeek-R1:**  
+- **Razonamiento Avanzado:** Lidera con un **97.3% en MATH-500**, destacándose en tareas matemáticas complejas.
+- **Análisis General:** Supera en **GPQA Diamond (75.7%)** y **MMLU (90.8%)**, mostrando un manejo sobresaliente en tareas de razonamiento general y multi-dominio.
+- **Eficiencia Operativa:** Con solo **1.9 GB de consumo de memoria en CPU**, procesa cientos de propiedades en minutos.
+
+Esta sinergia entre precisión numérica, adaptabilidad y optimización lo convierte en una herramienta clave para análisis inmobiliarios avanzados.
+
 
 ---
 
@@ -165,24 +170,6 @@ graph TD
    [OPORTUNIDAD] #142: Ratio UF/m² 27.3 (18.2% bajo promedio sector)
    [RECOMENDACIÓN] Considerar evaluación detallada por potencial de valorización
    ```
-
----
-
-
-## Roadmap de Desarrollo 🗺️
-
-### Versión 2.0 (Q4 2054)
-- Sistema Api para generar solicitudes
-- Flexibilidad para colocar distintos links
-- documentacion web 
-
----
-
-## Contacto 📧
-
-Si tienes preguntas o sugerencias, no dudes en contactarme:  
-📩 [tuemail@example.com](mailto:tuemail@example.com)  
-🌐 [GitHub](https://github.com/tuusuario)
 
 ---
 
