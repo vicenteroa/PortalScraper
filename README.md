@@ -2,7 +2,6 @@
 ![System Architecture](https://github.com/user-attachments/assets/f85b6729-4e4d-4ea2-abcc-0abeb61b7cf3)
 
 Sistema de análisis inteligente para el mercado inmobiliario Plataforma integral para extracción, procesamiento y análisis predictivo de datos de propiedades. Su propósito es optimizar el tiempo de búsqueda en portale inmobiliarios y detectar oportunidades en el sector
----
 
 ## Diseño del Sistema 🧠
 
