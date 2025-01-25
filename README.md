@@ -171,8 +171,10 @@ graph TD
    ```
 
 ---
+# ¡Gracias por usar **PortalScraper**! 🎉
 
-¡Gracias por usar **PortalScraper**! 🎉
+![image](https://github.com/user-attachments/assets/b4c1dd8f-d336-40de-a511-72ebc97f46d8)
+
 
 
 
