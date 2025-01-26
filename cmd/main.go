@@ -121,13 +121,12 @@ func mostrarEncabezado() {
 `
 
 	fmt.Println(titulo)
-
-	fmt.Println("══════════════════════════════════════════════════")
-	fmt.Println("               ¿Qué deseas hacer?                ")
-	fmt.Println("══════════════════════════════════════════════════")
-	fmt.Println("   1. Análisis Inteligente con IA")
-	fmt.Println("   2. Exportar datos a Excel")
-	fmt.Println("══════════════════════════════════════════════════\n")
+	//fmt.Println("════════════════════════════════════════════════════════════════════════════════════════════════════════════════")
+	fmt.Println("                                          ¿Qué deseas hacer?                ")
+	fmt.Println("═════════════════════════════════════════════════════════════════════════════════════════════════════════════════")
+	fmt.Println("                                     1. Análisis Inteligente con IA")
+	fmt.Println("                                     2. Exportar datos a Excel")
+	fmt.Println("════════════════════════════════════════════════════════════════════════════════════════════════════════════════\n")
 }
 
 func analizarPropiedades(props []models.Property) {
