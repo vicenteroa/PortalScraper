@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"portalscraper/internal/excel"
 	"portalscraper/internal/models"
 	"portalscraper/internal/ollama"
 	"portalscraper/internal/scraper"
@@ -39,13 +40,69 @@ func main() {
 		results = results[:20]
 	}
 
-	mostrarResultados(results)
+	mostrarMenu(results)
+}
+
+// Nuevas funciones para el menú
+func mostrarMenu(props []models.Property) {
+	for {
+		clearScreen()
+		mostrarEncabezado()
+
+		var opcion int
+		fmt.Print("\nSelecciona una opción: ")
+		_, err := fmt.Scanln(&opcion)
+		if err != nil {
+			fmt.Println("Error: Ingresa un número válido")
+			time.Sleep(1 * time.Second)
+			continue
+		}
+
+		switch opcion {
+		case 1:
+			analizarPropiedades(props)
+			return
+		case 2:
+			exportarExcel(props)
+			return
+		default:
+			fmt.Println("Opción no válida")
+			time.Sleep(1 * time.Second)
+		}
+	}
+}
+
+func mostrarEncabezado() {
+	titulo := `
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║██████╗  ██████╗ ██████╗ ████████╗ █████╗ ██╗         ███████╗ ██████╗██████╗  █████╗ ██████╗ ███████╗██████╗║
+║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗██║         ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗║
+║██████╔╝██║   ██║██████╔╝   ██║   ███████║██║         ███████╗██║     ██████╔╝███████║██████╔╝█████╗  ██████╔╝║
+║██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║██║         ╚════██║██║     ██╔══██╗██╔══██║██╔═══╝ ██╔══╝  ██╔══██╗║
+║██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║███████╗    ███████║╚██████╗██║  ██║██║  ██║██║     ███████╗██║  ██║║
+║╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝║
+║                                        v1.0.0 - Portal Scraper                                      
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+`
+
+	fmt.Println(titulo)
+
+	fmt.Println("══════════════════════════════════════════════════")
+	fmt.Println("               ¿Qué deseas hacer?                ")
+	fmt.Println("══════════════════════════════════════════════════")
+	fmt.Println("   1. Análisis Inteligente con IA")
+	fmt.Println("   2. Exportar datos a Excel")
+	fmt.Println("══════════════════════════════════════════════════\n")
+}
+func analizarPropiedades(props []models.Property) {
+	clearScreen()
+	mostrarResultados(props)
 
 	// Generar prompt compacto
 	fmt.Println("\n🧠 Generando análisis...")
 	client := ollama.NewClient()
 
-	prompt := construirPromptCompacto(results)
+	prompt := construirPromptCompacto(props)
 	fmt.Printf("📤 Prompt enviado (%d caracteres):\n%.200s...\n", len(prompt), prompt)
 
 	respuesta, err := client.Generate(prompt)
@@ -57,6 +114,24 @@ func main() {
 	fmt.Println(strings.TrimSpace(respuesta))
 }
 
+func exportarExcel(props []models.Property) {
+	clearScreen()
+	fmt.Println("📤 Exportando a Excel...")
+
+	filename, err := excel.ExportToExcel(props)
+	if err != nil {
+		log.Fatalf("💥 Error exportando: %v", err)
+	}
+
+	fmt.Printf("✅ Archivo creado: %s\n", filename)
+	fmt.Println("📁 Revisa el archivo Excel en tu directorio actual")
+}
+
+func clearScreen() {
+	fmt.Print("\033[H\033[2J")
+}
+
+// Funciones existentes que se mantienen igual
 func construirPromptCompacto(props []models.Property) string {
 	var sb strings.Builder
 	sb.WriteString("Analiza las propiedades calculando UF/m² y detecta oportunidades:\n")
@@ -74,7 +149,7 @@ func construirPromptCompacto(props []models.Property) string {
 
 		sb.WriteString(fmt.Sprintf("| %d | %s | %.2f UF | %.2f m² | \n",
 			i+1,
-			prop.Title, // Usar el título real de la propiedad
+			prop.Title,
 			uf,
 			m2,
 		))
@@ -90,23 +165,22 @@ func construirPromptCompacto(props []models.Property) string {
 	return sb.String()
 }
 
-// Funciones de soporte
-
 func extraerValorUF(precio string) float64 {
 	re := regexp.MustCompile(`UF(\d+\.?\d*)`)
 	match := re.FindStringSubmatch(precio)
 	if len(match) > 1 {
 		valor, _ := strconv.ParseFloat(match[1], 64)
-		return valor // UF16.400 → 16.4 (sin multiplicar por 1000)
+		return valor
 	}
 	return 0
 }
+
 func extraerValorM2(m2 string) float64 {
 	re := regexp.MustCompile(`(\d+\.?\d*)\s*m²`)
 	match := re.FindStringSubmatch(m2)
 	if len(match) > 1 {
 		valor, _ := strconv.ParseFloat(match[1], 64)
-		return valor // 178 m² útiles → 178.0
+		return valor
 	}
 	return 0
 }
