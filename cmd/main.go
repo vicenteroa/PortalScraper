@@ -15,7 +15,7 @@ import (
 
 func main() {
 	baseURL := "https://www.portalinmobiliario.com/venta/casa/propiedades-usadas/las-condes-metropolitana"
-	maxPages := 6
+	maxPages := 1
 	results := make([]models.Property, 0)
 
 	// Scraping rápido con límite
@@ -35,8 +35,8 @@ func main() {
 	}
 
 	// Limitar resultados para prueba
-	if len(results) > 15 {
-		results = results[:15]
+	if len(results) > 20 {
+		results = results[:20]
 	}
 
 	mostrarResultados(results)
@@ -71,18 +71,12 @@ func construirPromptCompacto(props []models.Property) string {
 	for i, prop := range props {
 		uf := extraerValorUF(prop.Price)
 		m2 := extraerValorM2(prop.M2)
-		ratio := ""
-		if uf > 0 && m2 > 0 {
-			ratio = fmt.Sprintf("%.2f", float64(uf)/float64(m2))
-		} else {
-			ratio = "N/A"
-		}
 
-		sb.WriteString(fmt.Sprintf("| %d | %s | %d | %d | %s |\n",
+		sb.WriteString(fmt.Sprintf("| %d | %s | %.2f UF | %.2f m² | \n",
 			i+1,
+			prop.Title, // Usar el título real de la propiedad
 			uf,
 			m2,
-			ratio,
 		))
 	}
 
@@ -97,30 +91,32 @@ func construirPromptCompacto(props []models.Property) string {
 }
 
 // Funciones de soporte
-func extraerValorUF(precio string) int {
+
+func extraerValorUF(precio string) float64 {
 	re := regexp.MustCompile(`UF(\d+\.?\d*)`)
 	match := re.FindStringSubmatch(precio)
 	if len(match) > 1 {
 		valor, _ := strconv.ParseFloat(match[1], 64)
-		return int(valor * 1000) // Convertir UF26.8 → 26800
+		return valor // UF16.400 → 16.4 (sin multiplicar por 1000)
+	}
+	return 0
+}
+func extraerValorM2(m2 string) float64 {
+	re := regexp.MustCompile(`(\d+\.?\d*)\s*m²`)
+	match := re.FindStringSubmatch(m2)
+	if len(match) > 1 {
+		valor, _ := strconv.ParseFloat(match[1], 64)
+		return valor // 178 m² útiles → 178.0
 	}
 	return 0
 }
 
-func extraerValorM2(m2 string) int {
-	re := regexp.MustCompile(`(\d+)\s*m²`)
-	match := re.FindStringSubmatch(m2)
-	if len(match) > 1 {
-		valor, _ := strconv.Atoi(match[1])
-		return valor
-	}
-	return 0
-}
 func mostrarResultados(props []models.Property) {
 	fmt.Printf("\n🏠 %d propiedades encontradas:\n", len(props))
 	for i, prop := range props {
 		fmt.Printf("\n%d. %s\n", i+1, prop.Title)
 		fmt.Printf("   💵 %s\n", prop.Price)
+		fmt.Printf("   📏 %s\n", prop.M2)
 		fmt.Printf("   📍 %s\n", prop.Location)
 		fmt.Printf("  🛜 %s\n", prop.Link)
 	}
