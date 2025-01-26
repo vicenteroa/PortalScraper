@@ -16,12 +16,41 @@ import (
 
 func main() {
 	baseURL := "https://www.portalinmobiliario.com/venta/casa/propiedades-usadas/las-condes-metropolitana"
-	maxPages := 1
 	results := make([]models.Property, 0)
 
-	// Scraping rápido con límite
-	fmt.Println("🔍 Iniciando scraping rápido...")
+	// Configuración de scraping
+	var maxPages, maxProperties int
+
+	// Solicitar cantidad de páginas
+	for {
+		fmt.Print("Ingrese cantidad de páginas a scrapear: ")
+		_, err := fmt.Scanln(&maxPages)
+		if err != nil || maxPages < 1 {
+			fmt.Println("Error: Debe ingresar un número mayor a 0")
+			continue
+		}
+		break
+	}
+
+	// Solicitar máximo de propiedades
+	for {
+		fmt.Print("Ingrese máximo de propiedades a obtener: ")
+		_, err := fmt.Scanln(&maxProperties)
+		if err != nil || maxProperties < 1 {
+			fmt.Println("Error: Debe ingresar un número mayor a 0")
+			continue
+		}
+		break
+	}
+
+	// Ejecutar scraping
+	fmt.Printf("\n🔍 Iniciando scraping (%d páginas, máximo %d propiedades)...\n", maxPages, maxProperties)
+
 	for page := 1; page <= maxPages; page++ {
+		if len(results) >= maxProperties {
+			break
+		}
+
 		url := fmt.Sprintf("%s?_PAGE=%d", baseURL, page)
 		fmt.Printf("📃 Página %d\n", page)
 
@@ -31,19 +60,25 @@ func main() {
 			break
 		}
 
+		// Controlar máximo de propiedades
+		remaining := maxProperties - len(results)
+		if len(props) > remaining {
+			props = props[:remaining]
+		}
+
 		results = append(results, props...)
 		time.Sleep(1 * time.Second)
 	}
 
-	// Limitar resultados para prueba
-	if len(results) > 20 {
-		results = results[:20]
+	// Asegurar no exceder el máximo
+	if len(results) > maxProperties {
+		results = results[:maxProperties]
 	}
 
 	mostrarMenu(results)
 }
 
-// Nuevas funciones para el menú
+// Resto del código sin modificaciones
 func mostrarMenu(props []models.Property) {
 	for {
 		clearScreen()
@@ -94,6 +129,7 @@ func mostrarEncabezado() {
 	fmt.Println("   2. Exportar datos a Excel")
 	fmt.Println("══════════════════════════════════════════════════\n")
 }
+
 func analizarPropiedades(props []models.Property) {
 	clearScreen()
 	mostrarResultados(props)
@@ -131,7 +167,6 @@ func clearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
-// Funciones existentes que se mantienen igual
 func construirPromptCompacto(props []models.Property) string {
 	var sb strings.Builder
 	sb.WriteString("Analiza las propiedades calculando UF/m² y detecta oportunidades:\n")
