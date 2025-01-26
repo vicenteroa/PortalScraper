@@ -1,6 +1,13 @@
 # PortalScraper 🏠
 ![image](https://github.com/user-attachments/assets/2ff7c8d9-9e99-4f45-ad74-f1c7c59c6514)
+<div align="center">
 
+![GitHub](https://img.shields.io/github/v/release/vicenteroa/PortalScraper?logo=github&style=flat-square)
+![Creator](https://img.shields.io/badge/Creator-Vicente%20Roa-blue?style=flat-square)
+  <a href="https://www.deepseek.com/" target="_blank" style="margin: 2px;">
+    <img alt="Homepage" src="https://github.com/deepseek-ai/DeepSeek-V2/blob/main/figures/badge.svg?raw=true" style="display: inline-block; vertical-align: middle;"/>
+  </a>
+  </div>
 Sistema de análisis inteligente para el mercado inmobiliario Plataforma integral para extracción, procesamiento y análisis predictivo de datos de propiedades. Su propósito es optimizar el tiempo de búsqueda en portale inmobiliarios y detectar oportunidades en el sector
 
 ## Diseño del Sistema 🧠
