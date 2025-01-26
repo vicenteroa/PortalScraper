@@ -1,5 +1,5 @@
 # PortalScraper 🏠
-![System Architecture](https://github.com/user-attachments/assets/f85b6729-4e4d-4ea2-abcc-0abeb61b7cf3)
+![image](https://github.com/user-attachments/assets/2ff7c8d9-9e99-4f45-ad74-f1c7c59c6514)
 
 Sistema de análisis inteligente para el mercado inmobiliario Plataforma integral para extracción, procesamiento y análisis predictivo de datos de propiedades. Su propósito es optimizar el tiempo de búsqueda en portale inmobiliarios y detectar oportunidades en el sector
 
@@ -172,9 +172,6 @@ graph TD
 
 ---
 # ¡Gracias por usar **PortalScraper**! 🎉
-
-![image](https://github.com/user-attachments/assets/b4c1dd8f-d336-40de-a511-72ebc97f46d8)
-
 
 
 
