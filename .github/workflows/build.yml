@@ -22,11 +22,26 @@ jobs:
         with:
           go-version: "1.23"
 
-      - name: Build
+      - name: Build for Linux
         run: go build -o portalscraper ./cmd
 
-      - name: Upload Artifact
+      - name: Build for Windows
+        run: GOOS=windows GOARCH=amd64 go build -o portalscraper.exe ./cmd
+
+      - name: Build for macOS
+        run: GOOS=darwin GOARCH=amd64 go build -o portalscraper-macos ./cmd
+
+      - name: Zip executables
+        run: |
+          zip portalscraper-linux.zip portalscraper
+          zip portalscraper-windows.zip portalscraper.exe
+          zip portalscraper-macos.zip portalscraper-macos
+
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: portalscraper
-          path: portalscraper
+          name: portalscraper-binaries
+          path: |
+            portalscraper-linux.zip
+            portalscraper-windows.zip
+            portalscraper-macos.zip
