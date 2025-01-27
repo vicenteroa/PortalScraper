@@ -15,7 +15,7 @@ import (
 
 func main() {
 	baseURL := "https://www.portalinmobiliario.com/venta/casa/propiedades-usadas/las-condes-metropolitana"
-	maxPages := 6
+	maxPages := 5
 	results := make([]models.Property, 0)
 
 	// Scraping rápido con límite
