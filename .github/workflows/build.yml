@@ -1,0 +1,47 @@
+name: Build Go Application
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+
+      - name: Build for Linux
+        run: go build -o portalscraper ./cmd
+
+      - name: Build for Windows
+        run: GOOS=windows GOARCH=amd64 go build -o portalscraper.exe ./cmd
+
+      - name: Build for macOS
+        run: GOOS=darwin GOARCH=amd64 go build -o portalscraper-macos ./cmd
+
+      - name: Zip executables
+        run: |
+          zip portalscraper-linux.zip portalscraper
+          zip portalscraper-windows.zip portalscraper.exe
+          zip portalscraper-macos.zip portalscraper-macos
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: portalscraper-binaries
+          path: |
+            portalscraper-linux.zip
+            portalscraper-windows.zip
+            portalscraper-macos.zip
